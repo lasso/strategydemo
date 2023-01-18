@@ -69,6 +69,8 @@ namespace Hasher
         {
             switch (algorithm)
             {
+                case HashAlgorithm.Attributes:
+                    return new AttributesStrategy();
                 case HashAlgorithm.MD5:
                     return new MD5Strategy();
                 case HashAlgorithm.SHA1:
