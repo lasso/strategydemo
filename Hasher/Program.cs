@@ -9,17 +9,17 @@ namespace Hasher
         {
             var argumentParser = new ArgumentParser(args);
 
-            if (argumentParser.TryParse(out var strategy, out var exception) && strategy != null)
+            if (argumentParser.TryParse(out var result, out var exception))
             {
-                var results = strategy.GetHashes();
+                var hashResults = result.strategy.GetHashes(result.files);
 
-                foreach (var result in results)
+                foreach (var hashResult in hashResults)
                 {
                     Console.Out.WriteLine(
                         string.Format(
                             "{0} => {1}",
-                            FormatFileName(result.File.FullName),
-                            result.Hash
+                            FormatFileName(hashResult.File.FullName),
+                            hashResult.Hash
                         )
                     );
                 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Hasher.Strategies;
 
@@ -13,9 +14,9 @@ namespace Hasher
             _args = args;
         }
 
-        public bool TryParse(out IHasherStrategy? strategy, out Exception? exception)
+        public bool TryParse(out (IHasherStrategy strategy, IReadOnlyList<FileInfo> files) result, out Exception? exception)
         {
-            strategy = null;
+            result = default;
             exception = null;
 
             if (_args.Length < 2)
@@ -23,6 +24,8 @@ namespace Hasher
                 exception = new ArgumentException("Invalid number of parameters");
                 return false;
             }
+
+            IHasherStrategy? strategy = null;
 
             if (Enum.TryParse<HashAlgorithm>(_args[0], true, out var algorithm))
             {
@@ -38,7 +41,7 @@ namespace Hasher
                 return false;
             }
 
-            var numFiles = 0;
+            var files = new List<FileInfo>();
 
             // Treat the rest of the arguments as file paths
             for (var i = 1; i < _args.Length; i++)
@@ -47,16 +50,17 @@ namespace Hasher
 
                 if (fileInfo.Exists)
                 {
-                    numFiles++;
-                    strategy.AddFile(fileInfo);
+                    files.Add(fileInfo);
                 }
             }
 
-            if (numFiles == 0)
+            if (files.Count == 0)
             {
                 exception = new ArgumentException("No valid files specified");
                 return false;
             }
+
+            result = (strategy, files);
 
             return true;
         }

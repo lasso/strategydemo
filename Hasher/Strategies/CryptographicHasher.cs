@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Hasher
+namespace Hasher.Strategies
 {
-    public abstract class CryptographicHasher<T> where T : System.Security.Cryptography.HashAlgorithm
+    public abstract class CryptographicHasher<T> : IHasherStrategy where T : System.Security.Cryptography.HashAlgorithm
     {
-        protected readonly List<FileInfo> _files = new List<FileInfo>();
-
-        public void AddFile(FileInfo file) => _files.Add(file);
-
-        public IReadOnlyList<HasherResult> GetHashes()
+        public IReadOnlyList<HasherResult> GetHashes(IEnumerable<FileInfo> files)
         {
             var hasher = GetHasher();
 
-            return _files.Select(file => {
+            return files.Select(file => {
                 using (var stream = file.OpenRead())
                 {
                     return new HasherResult(

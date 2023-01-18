@@ -5,8 +5,6 @@ namespace Hasher.Strategies
 {
     public interface IHasherStrategy
     {
-        void AddFile(FileInfo file);
-
-        IReadOnlyList<HasherResult> GetHashes();
+        IReadOnlyList<HasherResult> GetHashes(IEnumerable<FileInfo> files);
     }
 }
