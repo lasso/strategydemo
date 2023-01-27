@@ -21,7 +21,7 @@ namespace Hasher
 
             if (_args.Length < 2)
             {
-                exception = new ArgumentException("Invalid number of parameters");
+                exception = new ArgumentException("Invalid number of parameters.");
                 return false;
             }
 
@@ -37,7 +37,7 @@ namespace Hasher
                 }
             }
             else {
-                exception = new ArgumentException($"Invalid hash algorithm {algorithm}.");
+                exception = new ArgumentException($"Invalid hash algorithm '{_args[0]}'.");
                 return false;
             }
 
